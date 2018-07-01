@@ -1,17 +1,30 @@
 manipng
 =======
 
-MANIPNG, a bad wordplay on PNG manipulation and actually a PNG extractor (in case the PNG is embedded into something else, let's say an executable. Make me think I did not anticipated the case where there is more than one PNG inside the file) and analyzer. Nothing big, mainly a chunk analyzer.
+_manipng_, wordplay about PNG manipulation, actually a PNG analyser. Analysis is made using a simple chunk parser, although _manipng_ can incenditally be used as a _PNG_ extractor (e.g. from an executable). Made following a friendly request regarding one specific step from a SSTIC challenge (hence the sstic file in the test samples).
+
 
 Todo list
 ---------
 
-- Manage the case where there is more than one PNG inside the file (produce an adapted test sample)
+- **Move to python3** ('bout time)
+- Splitting the test samples folder and the source folder notion
+- Removing extractedpng and providing an optional location to the user
+- Handle more than one _PNG_ embedded in the original data
+- Produce a test sample file with three _PNG_ files embedded
+- Use a configuration file in json for various tweaks and features
+- Offer the user configuration regarding data dump
+- Add a traditional argparser-based cli
 - Expand the investigation part
-- Allows dynamic library import for chunk analysis (in order to easily integrate a reading/decoding function for custom chunk)
-- Produce a dump of the data before and after the PNG ?
+- Allows custom chunk analysers
+- Results provided as a _.json_ string or document
+- Option for automated _.md_ writeup document from the analysis _.json_
+- Wrap all that in a shiny package
 
-Thanks to
+
+Credits
 ---------
 
-- lorempixel and PngSuite (Willem van Schaik) for the test samples !
+- [RFC 2083](https://tools.ietf.org/html/rfc2083)
+- [lorempixel](http://lorempixel.com/)
+- [PngSuite](http://www.schaik.com/pngsuite/)
