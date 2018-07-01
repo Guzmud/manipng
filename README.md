@@ -9,11 +9,11 @@ Todo list
 
 - **Move to python3** ('bout time)
 - Splitting the test samples folder and the source folder notion
-- Removing extractedpng and providing an optional location to the user
-- Handle more than one _PNG_ embedded in the original data
+- ~~Removing extractedpng~~ and providing an optional location to the user
+- ~~Handle more than one _PNG_ embedded in the original data~~
 - Produce a test sample file with three _PNG_ files embedded
 - Use a configuration file in json for various tweaks and features
-- Offer the user configuration regarding data dump
+- Offer the user configuration regarding data dumps
 - Add a traditional argparser-based cli
 - Expand the investigation part
 - Allows custom chunk analysers
