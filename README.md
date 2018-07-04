@@ -4,22 +4,38 @@ manipng
 _manipng_, wordplay about PNG manipulation, actually a PNG analyser. Analysis is made using a simple chunk parser, although _manipng_ can incenditally be used as a _PNG_ extractor (e.g. from an executable). Made following a friendly request regarding one specific step from a SSTIC challenge (hence the sstic file in the test samples).
 
 
-Todo list
----------
+Requirements
+------------
+- python3
 
-- **Move to python3** ('bout time)
-- Splitting the test samples folder and the source folder notion
-- ~~Removing extractedpng~~ and providing an optional location to the user
-- ~~Handle more than one _PNG_ embedded in the original data~~
-- Produce a test sample file with three _PNG_ files embedded
-- Use a configuration file in json for various tweaks and features
-- Offer the user configuration regarding data dumps
-- Add a traditional argparser-based cli
-- Expand the investigation part
-- Allows custom chunk analysers
-- Results provided as a _.json_ string or document
-- Option for automated _.md_ writeup document from the analysis _.json_
-- Wrap all that in a shiny package
+
+Features
+--------
+- script and library available
+- manage 1+ PNG data in the same file
+- extract each .png
+- analyse each chunk
+- produce a metanalysis
+- reports dumped in json
+
+
+Todo
+----
+
+- finish/fix the CRC and CRC test, add it to analysis and metanalysis
+- rework the zTXt extraction
+- proper test suite
+- produce a test sample file with three _PNG_ files embedded
+- argparse based CLI
+- configuration for folders, json prettifying, data extraction, etc.
+- check ancillary chunks positions and sizes
+- check scale of value for color-related data
+- check/harvest specific keywords in textual data
+- allows custom chunk analysers
+- automated _.md_ writeup document from the analysis _.json_
+- wrap all that in a shiny package
+- packaging a library-only version
+- packaginf a hug-api version
 
 
 Credits
