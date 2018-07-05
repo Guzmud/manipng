@@ -21,8 +21,6 @@ Features
 
 Todo
 ----
-
-- finish/fix the CRC and CRC test, add it to analysis and metanalysis
 - rework the zTXt extraction
 - proper test suite
 - produce a test sample file with three _PNG_ files embedded

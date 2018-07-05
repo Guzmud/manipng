@@ -4,6 +4,7 @@ import binascii
 import hashlib
 import json
 import pathlib
+import zlib
 
 
 tags = {"header": "89504e470d0a1a0a",
@@ -69,7 +70,7 @@ def chunk_crc(data):
     return int(data, 16)
 
 
-def chunk_check(cdata, ccrc):  #TOFIX
+def chunk_check(cdata, ccrc):
     tcrc = binascii.crc32(bytes.fromhex(cdata))
     tcrc = tcrc & 0xffffffff
     tcrc = int(tcrc)
@@ -83,7 +84,7 @@ def chunk_eating(data):
         ctype = chunk_type(data[k+8:k+16])
         cdata = chunk_data(data[k+16:k+16+clen])
         ccrc = chunk_crc(data[k+16+clen:k+24+clen])
-        check = chunk_check(data[k+16:k+16+clen], ccrc)
+        check = chunk_check(data[k+8:k+16+clen], ccrc)
         yield {"len": clen,
                "type": ctype,
                "data": cdata,
@@ -108,6 +109,10 @@ def get_tEXT(data):
     return bytes.fromhex(data).decode("utf-8")
 
 
+def get_zTXt(data):
+    return zlib.decompress(bytes.fromhex(data), 0)
+
+
 def chunk_extract(ctype, cdata):
     if ctype == "tIME":
         return get_tIME(cdata)
@@ -115,11 +120,14 @@ def chunk_extract(ctype, cdata):
         return get_tEXT(cdata)
     elif ctype == "iTXt":
         return get_tEXT(cdata)
+    elif ctype == "zTXt":
+        return get_zTXt(cdata)
 
 
 def chunk_analysis(data):
     analysis = {'legit_type': data["type"] in chunks,
                 'total_len': 24+data["len"],
+                'failed_crc': not data["check"],
                }
     return analysis
 
@@ -130,11 +138,12 @@ def chunk_eater(data):
     metanalysis = {"suspicious_types": list(),
                    "empty_chunks": list(),
                    "extracted_signals": list(),
+                   "detected_errors": list(),
                   }
     ptr = 0
 
     for chunk in chunk_eating(data):
-        if chunk["type"] in ["tIME", "tEXT", "iTXt"]:
+        if chunk["type"] in ["tIME", "tEXT", "iTXt"]:  #wip: zTXt
             chunk["extract"] = chunk_extract(chunk["type"], chunk["data"])
             metanalysis["extracted_signals"].append((ptr,
                                                      chunk["type"],
@@ -153,6 +162,11 @@ def chunk_eater(data):
             metanalysis["empty_chunks"].append((ptr,
                                                 chunk["type"],
                                                 ))
+
+        if not chunk["check"]:
+            metanalysis["detected_errors"].append((ptr,
+                                                  chunk["type"],
+                                                  ))
 
         if chunk["type"] == "IEND" and chunk["len"] > 0:
             metanalysis["IEND_data"] = chunk["data"]
